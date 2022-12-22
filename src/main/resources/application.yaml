@@ -1,0 +1,31 @@
+spring:
+ jpa:
+   show-sql: true	#loga o sql porem sem os valores de parametros na query
+   generate-ddl: true
+   properties:
+     hibernate:
+       format_sql: true
+       #https://docs.jboss.org/hibernate/orm/5.4/userguide/html_single/Hibernate_User_Guide.html#configurations-hbmddl
+       ddl-auto: create
+       jdbc:
+         time_zone: UTC
+   database-platform: org.hibernate.dialect.MySQL8Dialect
+ datasource:
+   driver-class-name: com.mysql.cj.jdbc.Driver
+   url: jdbc:mysql://localhost:3306/igti_demo
+   username: root
+   password: 123123
+logging:
+  level:
+    br.com.villadev.igti: DEBUG
+    org.hibernate.SQL: DEBUG
+    #hibernate 5 mostrar os valores de parametros na query
+    org.hibernate.type.descriptor.sql: TRACE
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+        exclude: "env,beans"
+
+ 
