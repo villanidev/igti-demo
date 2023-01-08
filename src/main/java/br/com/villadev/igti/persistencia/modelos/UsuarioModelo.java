@@ -49,7 +49,7 @@ public class UsuarioModelo {
 	private LocalDateTime ultimoAcesso;
 	@OneToOne(cascade = CascadeType.ALL, optional = false)
 	private LoginModelo login;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "tenant_id")
 	@JsonIgnore
 	private InquilinoModelo tenant;

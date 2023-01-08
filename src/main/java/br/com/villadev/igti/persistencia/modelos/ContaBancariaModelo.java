@@ -1,7 +1,8 @@
 package br.com.villadev.igti.persistencia.modelos;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,15 +18,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "tbl_contato")
-public class ContatoModelo {
+@Table(name = "tbl_conta_bancaria")
+public class ContaBancariaModelo {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(unique = true, nullable = false)
-	private String email;
-	@Column(nullable = false)
-	private String telefone;
+	@Enumerated(EnumType.STRING)
+	private Banco banco;
+	private String agencia;
+	private String conta;
 
 }

@@ -18,6 +18,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
@@ -39,6 +40,8 @@ public class InquilinoModelo {
 	private LocalDateTime ultimoAcesso;
 	@OneToMany(mappedBy = "tenant", cascade = CascadeType.ALL, orphanRemoval = true)
 	@Builder.Default
+	/*evita dependencia circular no lombok na hora de gerar equals and hashcode*/
+	@EqualsAndHashCode.Exclude
 	@Setter(value = AccessLevel.NONE)
 	private Set<UsuarioModelo> usuarios = new HashSet<>();
 	@OneToOne(mappedBy = "tenant")
@@ -46,10 +49,12 @@ public class InquilinoModelo {
 	
 	public void adicionarUsuario(final UsuarioModelo usuario) {
 		usuarios.add(usuario);
+		usuario.setTenant(this);
 	}
 	
 	public void removerUsuario(final UsuarioModelo usuario) {
 		usuarios.remove(usuario);
+		usuario.setTenant(null);
 	}
 	
 	public void adicionarUsuarios(final Collection<UsuarioModelo> usuarios) {

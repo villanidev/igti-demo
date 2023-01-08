@@ -9,13 +9,18 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import br.com.villadev.igti.persistencia.acessoadados.FornecedorRepositorio;
 import br.com.villadev.igti.persistencia.acessoadados.FuncionalidadeRepositorio;
-import br.com.villadev.igti.persistencia.acessoadados.InquilinoRepositorio;
 import br.com.villadev.igti.persistencia.acessoadados.OrganizacaoRepositorio;
 import br.com.villadev.igti.persistencia.acessoadados.PapelRepositorio;
 import br.com.villadev.igti.persistencia.acessoadados.PermissaoRepositorio;
-import br.com.villadev.igti.persistencia.acessoadados.UsuarioRepositorio;
+import br.com.villadev.igti.persistencia.modelos.Banco;
+import br.com.villadev.igti.persistencia.modelos.ContaBancariaModelo;
+import br.com.villadev.igti.persistencia.modelos.ContatoModelo;
+import br.com.villadev.igti.persistencia.modelos.EnderecoModelo;
+import br.com.villadev.igti.persistencia.modelos.FornecedorModelo;
 import br.com.villadev.igti.persistencia.modelos.FuncionalidadeModelo;
+import br.com.villadev.igti.persistencia.modelos.InformacaoBancariaModelo;
 import br.com.villadev.igti.persistencia.modelos.InquilinoModelo;
 import br.com.villadev.igti.persistencia.modelos.LoginModelo;
 import br.com.villadev.igti.persistencia.modelos.OrganizacaoModelo;
@@ -33,16 +38,13 @@ public class IgtiDemoApplication implements CommandLineRunner {
 	OrganizacaoRepositorio organizacaoRepositorio;
 	
 	@Autowired
-	InquilinoRepositorio inquilinoRepositorio;
-	
-	@Autowired
-	UsuarioRepositorio usuarioRepositorio;
-	
-	@Autowired
 	PapelRepositorio papelRepositorio;
 	
 	@Autowired
 	PermissaoRepositorio permissaoRepositorio;
+	
+	@Autowired
+	FornecedorRepositorio fornecedorRepositorio;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(IgtiDemoApplication.class, args);
@@ -108,10 +110,59 @@ public class IgtiDemoApplication implements CommandLineRunner {
 		usuario2.adicionarPapel(papelBasico);
 		usuario3.adicionarPapel(papelAvancado);
 		
+		permissaoRepositorio.saveAll(List.of(permissaoEscrita, permissaoLeitura));
+		
+		papelRepositorio.saveAll(List.of(papelBasico, papelAvancado));
+		
 		funcionalidadeRepositorio.save(funcionalidade1);
+		
 		organizacaoRepositorio.save(org1);
 		
-		System.out.println("FIM");
+		System.out.println("FIM dos modelos de estrutura");
+		
+		//cria informacao bancaria
+		InformacaoBancariaModelo infoBancaria1 = InformacaoBancariaModelo.builder()
+				.build();
+		
+		infoBancaria1.adicionarContaBancaria(
+				ContaBancariaModelo.builder()
+					.agencia("1545")
+					.conta("45454545")
+					.banco(Banco.BANCO_DO_BRASIL)
+					.build());
+		
+		infoBancaria1.adicionarContaBancaria(
+				ContaBancariaModelo.builder()
+					.agencia("1578")
+					.conta("98654545")
+					.banco(Banco.CAIXA)
+					.build());
+		
+		//cria endereco
+		EnderecoModelo endereco1 = EnderecoModelo.builder()
+				.logradouro("rua teste").numero(45).complemento("5º andar").cep("1856897848").build();
+		
+		EnderecoModelo endereco2 = EnderecoModelo.builder()
+				.logradouro("rua teste2").numero(45).complemento("1º andar").cep("1850897848").build();
+		
+		//cria contato
+		ContatoModelo contato1 = ContatoModelo.builder().email("teste1@email.com").telefone("5588989454515").build();
+		ContatoModelo contato2 = ContatoModelo.builder().email("teste2@email.com").telefone("5588989454789").build();
+		
+		//cria fornecedor e associa informacao bancaria
+		FornecedorModelo fornecedor1 = FornecedorModelo.builder().nomeFantasia("Fornec1").cnpj("48227518000199").codigo(UUID.randomUUID().toString())
+				.informacaoBancaria(infoBancaria1)
+				.build();
+		
+		//associa endereco ao fornecedor
+		fornecedor1.adicionarEnderecos(List.of(endereco1, endereco2));
+		
+		//associa contato ao fornecedor
+		fornecedor1.adicionarContatos(List.of(contato1, contato2));
+		
+		fornecedorRepositorio.save(fornecedor1);
+		
+		System.out.println("FIM dos modelos de negocio");
 		
 	}
 
