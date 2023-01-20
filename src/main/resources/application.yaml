@@ -6,7 +6,7 @@ spring:
      hibernate:
        format_sql: true
        #https://docs.jboss.org/hibernate/orm/5.4/userguide/html_single/Hibernate_User_Guide.html#configurations-hbmddl
-       ddl-auto: create
+       ddl-auto: update
        jdbc:
          time_zone: UTC
    database-platform: org.hibernate.dialect.MySQL8Dialect

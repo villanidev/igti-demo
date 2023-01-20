@@ -110,13 +110,13 @@ public class IgtiDemoApplication implements CommandLineRunner {
 		usuario2.adicionarPapel(papelBasico);
 		usuario3.adicionarPapel(papelAvancado);
 		
-		permissaoRepositorio.saveAll(List.of(permissaoEscrita, permissaoLeitura));
+		//permissaoRepositorio.saveAll(List.of(permissaoEscrita, permissaoLeitura));
 		
-		papelRepositorio.saveAll(List.of(papelBasico, papelAvancado));
+		//papelRepositorio.saveAll(List.of(papelBasico, papelAvancado));
 		
-		funcionalidadeRepositorio.save(funcionalidade1);
+		//funcionalidadeRepositorio.save(funcionalidade1);
 		
-		organizacaoRepositorio.save(org1);
+		//organizacaoRepositorio.save(org1);
 		
 		System.out.println("FIM dos modelos de estrutura");
 		
@@ -160,7 +160,7 @@ public class IgtiDemoApplication implements CommandLineRunner {
 		//associa contato ao fornecedor
 		fornecedor1.adicionarContatos(List.of(contato1, contato2));
 		
-		fornecedorRepositorio.save(fornecedor1);
+		//fornecedorRepositorio.save(fornecedor1);
 		
 		System.out.println("FIM dos modelos de negocio");
 		
